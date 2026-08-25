@@ -1,0 +1,36 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+build/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 数据库
+*.db
+*.db-journal
+*.db-wal
+
+# 上传文件（开发环境）
+backend/uploads/images/*
+backend/uploads/videos/*
+!backend/uploads/images/.gitkeep
+!backend/uploads/videos/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+npm-debug.log*
