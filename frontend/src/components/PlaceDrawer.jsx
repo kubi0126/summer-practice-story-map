@@ -4,6 +4,7 @@ import { PLACES, ROUTE_CONFIG } from '../utils/constants';
 import { formatDateFull } from '../utils/formatDate';
 import Gallery from './Gallery';
 import VideoPlayer from './VideoPlayer';
+import { lockBodyScroll } from '../utils/scrollLock';
 
 /**
  * 地点详情侧边栏组件
@@ -40,11 +41,14 @@ function PlaceDrawer({ placeId, isOpen, onClose }) {
     };
     if (isOpen) {
       document.addEventListener('keydown', handleKey);
-      document.body.style.overflow = 'hidden';
+      const releaseScrollLock = lockBodyScroll();
+      return () => {
+        document.removeEventListener('keydown', handleKey);
+        releaseScrollLock();
+      };
     }
     return () => {
       document.removeEventListener('keydown', handleKey);
-      document.body.style.overflow = '';
     };
   }, [isOpen, onClose]);
 
@@ -71,6 +75,9 @@ function PlaceDrawer({ placeId, isOpen, onClose }) {
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
             className="fixed top-0 right-0 z-50 w-full sm:w-[440px] h-full
               bg-white shadow-2xl overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${place.name}详情`}
           >
             {/* 关闭按钮 */}
             <button

@@ -29,33 +29,6 @@ html {
   background: #94a3b8;
 }
 
-/* Leaflet 容器高度 */
-.leaflet-container {
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-/* 自定义 Leaflet Popup 样式 */
-.leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  padding: 0;
-  overflow: hidden;
-}
-
-.leaflet-popup-content {
-  margin: 0;
-  min-width: 220px;
-}
-
-.leaflet-popup-close-button {
-  top: 8px !important;
-  right: 8px !important;
-  color: #64748b !important;
-  font-size: 20px !important;
-}
-
 /* Swiper 自定义 */
 .swiper-pagination-bullet-active {
   background-color: #E67E22 !important;

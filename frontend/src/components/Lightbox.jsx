@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { lockBodyScroll } from '../utils/scrollLock';
 
 /**
  * Lightbox 全屏图片查看组件
@@ -41,10 +42,10 @@ function Lightbox({ images, initialIndex = 0, onClose }) {
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
+    const releaseScrollLock = lockBodyScroll();
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
+      releaseScrollLock();
     };
   }, [handleKeyDown]);
 
@@ -56,6 +57,9 @@ function Lightbox({ images, initialIndex = 0, onClose }) {
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
         onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-label="图片预览"
       >
         {/* 关闭按钮 */}
         <button

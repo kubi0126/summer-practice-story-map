@@ -33,7 +33,7 @@ function HeroSection() {
     >
       {/* 背景：实践照片 */}
       <img
-        src="/assets/images/hero-bg.jpg"
+        src={HERO_CONFIG.heroImage}
         alt="实践背景"
         className="absolute inset-0 w-full h-full object-cover"
       />

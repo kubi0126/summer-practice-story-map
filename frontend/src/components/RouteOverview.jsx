@@ -1,6 +1,13 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ROUTE_CONFIG, ROUTE_ANNOTATIONS } from '../utils/constants';
+import {
+  MIN_ZOOM,
+  MAX_ZOOM,
+  ZOOM_STEP,
+  calculateWheelZoom,
+  calculateDragOffset,
+} from '../utils/mapInteraction';
 
 /**
  * 路线概览图组件（支持缩放）
@@ -16,10 +23,6 @@ import { ROUTE_CONFIG, ROUTE_ANNOTATIONS } from '../utils/constants';
  * }} props
  */
 
-const MIN_ZOOM = 1.0;   // 100%
-const MAX_ZOOM = 3.0;   // 300%
-const ZOOM_STEP = 0.15;
-
 function RouteOverview({ activePlaceId, onMarkerClick }) {
   const points = [...ROUTE_ANNOTATIONS].sort((a, b) => a.placeId - b.placeId);
   const polylinePoints = points.map((p) => `${p.left},${p.top}`).join(' ');
@@ -28,7 +31,7 @@ function RouteOverview({ activePlaceId, onMarkerClick }) {
   const [zoom, setZoom] = useState(1.0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
-  const dragStart = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
+  const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
   const containerRef = useRef(null);
 
   // 用 ref 保存最新值，避免原生事件监听器中的闭包过期
@@ -52,15 +55,15 @@ function RouteOverview({ activePlaceId, onMarkerClick }) {
     if (!el) return;
 
     const handleWheel = (e) => {
-      e.preventDefault();  // ← 阻止页面滚动，仅在非 passive 模式下生效
+      const z = zoomRef.current;
+      const { zoom: newZoom, changed } = calculateWheelZoom(z, e.deltaY);
+      if (!changed) return;
+
+      e.preventDefault();
       const rect = el.getBoundingClientRect();
 
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
-
-      const z = zoomRef.current;
-      const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
-      const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z + delta));
 
       const scaleChange = newZoom / z;
       const o = offsetRef.current;
@@ -75,41 +78,43 @@ function RouteOverview({ activePlaceId, onMarkerClick }) {
     return () => el.removeEventListener('wheel', handleWheel);
   }, [clampOffset]);
 
-  // 鼠标按下 → 开始拖拽
-  const handleMouseDown = useCallback((e) => {
+  // 指针按下 → 开始拖拽（兼容鼠标、触屏和触控笔）
+  const handlePointerDown = useCallback((e) => {
     if (zoom <= 1.0) return; // 100% 时不需要拖拽
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.target.closest('button')) return;
     e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
     setDragging(true);
     dragStart.current = {
       x: e.clientX,
       y: e.clientY,
-      ox: offset.x,
-      oy: offset.y,
+      offsetX: offset.x,
+      offsetY: offset.y,
     };
   }, [zoom, offset]);
 
-  // 鼠标移动 → 拖拽中
-  const handleMouseMove = useCallback((e) => {
+  // 指针移动 → 拖拽中
+  const handlePointerMove = useCallback((e) => {
     if (!dragging) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
+    const nextOffset = calculateDragOffset(dragStart.current, {
+      x: e.clientX,
+      y: e.clientY,
+    });
     setOffset(clampOffset(
       zoom,
-      dragStart.current.ox + dx,
-      dragStart.current.oy + dy
+      nextOffset.x,
+      nextOffset.y
     ));
   }, [dragging, zoom, clampOffset]);
 
-  // 鼠标松开 → 停止拖拽
-  const handleMouseUp = useCallback(() => {
+  // 指针松开或取消 → 停止拖拽
+  const handlePointerEnd = useCallback((e) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
     setDragging(false);
   }, []);
-
-  // 全局 mouseup 监听（鼠标可能移到容器外松开）
-  useEffect(() => {
-    window.addEventListener('mouseup', handleMouseUp);
-    return () => window.removeEventListener('mouseup', handleMouseUp);
-  }, [handleMouseUp]);
 
   // 缩放按钮
   const zoomIn = () => {
@@ -140,12 +145,15 @@ function RouteOverview({ activePlaceId, onMarkerClick }) {
       {/* ======== 地图视口（固定尺寸 + 隐藏溢出） ======== */}
       <div
         ref={containerRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
         className={`relative w-full aspect-[16/10] rounded-2xl overflow-hidden
           shadow-xl border border-gray-200 bg-gray-100 select-none
           ${zoom > 1.0 ? 'cursor-grab' : 'cursor-default'}
           ${dragging ? 'cursor-grabbing' : ''}`}
+        style={{ touchAction: zoom > 1.0 ? 'none' : 'pan-y' }}
       >
         {/* ======== 可缩放的内容层 ======== */}
         <div

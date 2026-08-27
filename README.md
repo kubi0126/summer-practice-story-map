@@ -202,7 +202,7 @@ npm run preview    # 本地预览生产版本
 frontend/src/
 ├── main.jsx                    # ReactDOM.createRoot 入口
 ├── App.jsx                     # 根组件，状态管理
-├── index.css                   # Tailwind 指令 + Leaflet/Swiper 覆盖
+├── index.css                   # Tailwind 指令 + Swiper 样式覆盖
 │
 ├── utils/
 │   ├── constants.js            # ⭐ 所有可配置数据

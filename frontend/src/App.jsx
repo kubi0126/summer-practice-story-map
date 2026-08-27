@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import MapSection from './components/MapSection';
@@ -7,6 +7,7 @@ import StatsSection from './components/StatsSection';
 import TeamSection from './components/TeamSection';
 import Footer from './components/Footer';
 import PlaceDrawer from './components/PlaceDrawer';
+import { createCancelableDelay } from './utils/cancelableDelay';
 
 /**
  * App — 根组件
@@ -14,7 +15,6 @@ import PlaceDrawer from './components/PlaceDrawer';
  * 状态管理：
  * - activePlaceId:  当前选中的地点（null = 未选中）
  * - drawerOpen:     详情侧边栏是否打开
- * - flyToPlaceId:   需要地图飞行定位的地点（时间轴触发）
  *
  * 数据流：
  * App 持有所有共享状态 → 通过 props 下发给子组件
@@ -24,9 +24,17 @@ import PlaceDrawer from './components/PlaceDrawer';
 function App() {
   const [activePlaceId, setActivePlaceId] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const resetDelayRef = useRef(null);
+
+  if (resetDelayRef.current === null) {
+    resetDelayRef.current = createCancelableDelay();
+  }
+
+  useEffect(() => () => resetDelayRef.current.cancel(), []);
 
   // 路线标注点 / 时间轴点击 → 打开详情侧边栏
   const handleMarkerClick = useCallback((placeId) => {
+    resetDelayRef.current.cancel();
     setActivePlaceId(placeId);
     setDrawerOpen(true);
   }, []);
@@ -34,7 +42,7 @@ function App() {
   // 关闭侧边栏
   const handleDrawerClose = useCallback(() => {
     setDrawerOpen(false);
-    setTimeout(() => setActivePlaceId(null), 300);
+    resetDelayRef.current.schedule(() => setActivePlaceId(null), 300);
   }, []);
 
   return (
