@@ -60,12 +60,12 @@ export const PLACES = [
 站在前辈铺就的道路上，我深刻意识到：青年接续奋斗不能止于感动。当年牧民们"舍小家为大家"的抉择，与今天科研工作者"把论文写在祖国大地上"的坚守，本质上是同一种价值取向——把个人命运融入国家需要。`,
     videoUrl: '',
     images: [
-      { id: 101, url: '/assets/images/xining/01.jpg', caption: '破冰会与行前要求说明会', isCover: true },
-      { id: 102, url: '/assets/images/xining/02.jpg', caption: '西宁城市街景', isCover: false },
-      { id: 103, url: '/assets/images/xining/03.jpg', caption: '金银滩草原，昔日核基地', isCover: false },
-      { id: 104, url: '/assets/images/xining/04.jpg', caption: '青海原子城纪念馆', isCover: false },
-      { id: 105, url: '/assets/images/xining/05.jpg', caption: '青海省气象科研所', isCover: false },
-      { id: 106, url: '/assets/images/xining/06.jpg', caption: '青海理工大学新能源实验室', isCover: false },
+      { id: 101, url: 'assets/images/xining/01.jpg', caption: '破冰会与行前要求说明会', isCover: true },
+      { id: 102, url: 'assets/images/xining/02.jpg', caption: '西宁城市街景', isCover: false },
+      { id: 103, url: 'assets/images/xining/03.jpg', caption: '金银滩草原，昔日核基地', isCover: false },
+      { id: 104, url: 'assets/images/xining/04.jpg', caption: '青海原子城纪念馆', isCover: false },
+      { id: 105, url: 'assets/images/xining/05.jpg', caption: '青海省气象科研所', isCover: false },
+      { id: 106, url: 'assets/images/xining/06.jpg', caption: '青海理工大学新能源实验室', isCover: false },
     ],
   },
   {
@@ -87,7 +87,7 @@ export const PLACES = [
 更触动我的是"新城"二字。国防要地不只留下了纪念碑，更留下了一座有人生活的城市。从生存温饱到宜居富足，这种跨越不是宏大的口号，而是移民社区里的住房、学校和卫生院。与金银滩、马兰一样，四〇四的底色是"隐姓埋名、为国奉献"。中国式现代化在西部落地，正是在这些日常变化中获得了民生尺度。`,
     videoUrl: '',
     images: [
-      { id: 201, url: '/assets/images/placeholder-photo.svg', caption: '现场照片整理中', isCover: true },
+      { id: 201, url: 'assets/images/placeholder-photo.svg', caption: '现场照片整理中', isCover: true },
     ],
   },
   {
@@ -109,7 +109,7 @@ export const PLACES = [
 但最打动我的仍是那些具体的名字：林俊德、程开甲，以及无数没有留下姓名的建设者。他们把个人选择融入国家需要，在荒漠中默默奉献一生。这种精神财富，正激励着新时代科技工作者接续奋斗。`,
     videoUrl: '',
     images: [
-      { id: 301, url: '/assets/images/placeholder-secret.svg', caption: '涉密地点，不展示现场照片', isCover: true },
+      { id: 301, url: 'assets/images/placeholder-secret.svg', caption: '涉密地点，不展示现场照片', isCover: true },
     ],
   },
   {
@@ -131,8 +131,8 @@ export const PLACES = [
 石榴花开，籽籽同心。东西部协作不是资源的单向输送，而是让各自的能力和需求在协作中找到结合点。作为新时代青年，我们更要主动做民族团结的践行者，让石榴花开长盛不衰。`,
     videoUrl: '',
     images: [
-      { id: 401, url: '/assets/images/urumqi/01.jpg', caption: '乌鲁木齐博物馆', isCover: true },
-      { id: 402, url: '/assets/images/urumqi/02.jpg', caption: '国际大巴扎', isCover: false },
+      { id: 401, url: 'assets/images/urumqi/01.jpg', caption: '乌鲁木齐博物馆', isCover: true },
+      { id: 402, url: 'assets/images/urumqi/02.jpg', caption: '国际大巴扎', isCover: false },
     ],
   },
 ];
@@ -160,49 +160,49 @@ export const TEAM_MEMBERS = [
     name: '杨煜坤',
     role: '负责人',
     bio: '大气科学学院 · 全程统筹、调研访谈、审核校验',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
   {
     id: 2,
     name: '高漪静',
     role: '采编文字',
     bio: '马克思主义学院 · 采编文字、汇总统稿',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
   {
     id: 3,
     name: '毛欣然',
     role: '调研访谈',
     bio: '大气科学学院 · 调研访谈、报告撰写',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
   {
     id: 4,
     name: '魏雨萱',
     role: '宣讲授课',
     bio: '化学学院 · 宣讲授课、报告撰写',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
   {
     id: 5,
     name: '尹照达',
     role: '摄影摄像',
     bio: '计算机学院 · 摄影摄像、报告撰写',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
   {
     id: 6,
     name: '高嘉琪',
     role: '采编文字',
     bio: '化学学院 · 采编文字、报告撰写',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
   {
     id: 7,
     name: '祝一菲',
     role: '摄影摄像',
     bio: '智能软件与工程学院 · 摄影摄像、报告撰写',
-    avatarUrl: '/assets/team/default-avatar.svg',
+    avatarUrl: 'assets/team/default-avatar.svg',
   },
 ];
 
@@ -214,7 +214,7 @@ export const HERO_CONFIG = {
   subtitle: '中国式现代化在西部大地的实践逻辑',
   practiceDate: '2026年7月11日 — 7月16日',
   teamName: '南京大学西宁—马兰线暑期社会实践团',
-  heroImage: '/assets/images/hero-bg.jpg',
+  heroImage: 'assets/images/hero-bg.jpg',
 };
 
 // ============================================

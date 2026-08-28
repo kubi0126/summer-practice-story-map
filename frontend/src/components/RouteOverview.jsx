@@ -165,7 +165,7 @@ function RouteOverview({ activePlaceId, onMarkerClick }) {
         >
           {/* 地图图片 */}
           <img
-            src="/assets/images/map-bg.jpg"
+            src="assets/images/map-bg.jpg"
             alt="实践路线概览"
             className="w-full h-full object-contain"
             draggable={false}
